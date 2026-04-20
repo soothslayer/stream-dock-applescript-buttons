@@ -154,7 +154,7 @@ on openNewTerminalAndStartClaude(claudeBin, reuseFrontWindow)
 end openNewTerminalAndStartClaude
 
 on run
-	say "Row 1, Column 1"
+	say "Row 1, Column 1. Slight change"
 	my speak("Starting Claude voice mode.")
 	
 	set terminalWasRunning to true
