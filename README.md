@@ -1,13 +1,13 @@
 # stream-dock-applescript-buttons
 
-Remotely-updatable AppleScript actions for a 16-button (4×4) Stream Deck.
+Remotely-updatable AppleScript actions for a 15-button (3 rows × 5 columns) Stream Deck.
 
 ## How it works
 
 Two folders, one-to-one mapping:
 
-- **`buttons/`** — 16 thin wrapper scripts. Installed once onto the Mac and assigned to Stream Deck buttons. These never change.
-- **`scripts/`** — 16 real scripts. Edit these on GitHub any time to change what a button does. The next button press downloads and runs the new version.
+- **`buttons/`** — 15 thin wrapper scripts. Installed once onto the Mac and assigned to Stream Deck buttons. These never change.
+- **`scripts/`** — 15 real scripts. Edit these on GitHub any time to change what a button does. The next button press downloads and runs the new version.
 
 Each button wrapper:
 
@@ -19,16 +19,15 @@ If offline, the last cached version runs instead. If there's no cache and no net
 
 ## Naming
 
-`Row{1-4}-Col{1-4}.applescript` maps directly to the physical grid:
+`Row{1-3}-Col{1-5}.applescript` maps directly to the physical grid:
 
 ```
-Row1-Col1  Row1-Col2  Row1-Col3  Row1-Col4
-Row2-Col1  Row2-Col2  Row2-Col3  Row2-Col4
-Row3-Col1  Row3-Col2  Row3-Col3  Row3-Col4
-Row4-Col1  Row4-Col2  Row4-Col3  Row4-Col4
+Row1-Col1  Row1-Col2  Row1-Col3  Row1-Col4  Row1-Col5
+Row2-Col1  Row2-Col2  Row2-Col3  Row2-Col4  Row2-Col5
+Row3-Col1  Row3-Col2  Row3-Col3  Row3-Col4  Row3-Col5
 ```
 
-Top-left is `Row1-Col1`, bottom-right is `Row4-Col4`.
+Top-left is `Row1-Col1`, bottom-right is `Row3-Col5`.
 
 ## One-time setup (on the friend's Mac)
 
@@ -36,9 +35,9 @@ Top-left is `Row1-Col1`, bottom-right is `Row4-Col4`.
 curl -fsSL https://raw.githubusercontent.com/soothslayer/stream-dock-applescript-buttons/main/install.sh | bash
 ```
 
-This compiles all 16 wrappers into `.app` bundles in `~/StreamDockButtons/`.
+This compiles all 15 wrappers into `.app` bundles in `~/StreamDockButtons/`.
 
-Then in the Stream Deck app, for each of the 16 buttons:
+Then in the Stream Deck app, for each of the 15 buttons:
 
 1. Drag **System → Open** onto the button.
 2. Set the File to the matching `.app` in `~/StreamDockButtons/` (e.g. top-left button → `Row1-Col1.app`).

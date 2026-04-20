@@ -17,19 +17,19 @@ trap 'rm -rf "$TMP"' EXIT
 echo "Cloning $REPO ..."
 git clone --depth 1 "$REPO" "$TMP"
 
-echo "Compiling 16 button apps into $DEST ..."
+echo "Compiling 15 button apps into $DEST ..."
 for f in "$TMP"/buttons/*.applescript; do
   name=$(basename "$f" .applescript)
   osacompile -o "$DEST/$name.app" "$f"
   echo "  built $name.app"
 done
 
-say "Stream Deck buttons installed. 16 apps in Stream Dock Buttons folder." || true
+say "Stream Deck buttons installed. 15 apps in Stream Dock Buttons folder." || true
 
 echo ""
-echo "Done. 16 apps are in: $DEST"
+echo "Done. 15 apps are in: $DEST"
 echo "Assign each one to its matching Stream Deck button:"
 echo "  Row1-Col1.app = top-left button"
-echo "  Row4-Col4.app = bottom-right button"
+echo "  Row3-Col5.app = bottom-right button"
 echo ""
 echo "In Stream Deck app: drag 'System > Open' onto a button, set File to the .app."

@@ -10,11 +10,9 @@ set cachePath to cacheDir & scriptName
 
 do shell script "mkdir -p " & quoted form of cacheDir
 
-set fetched to false
 try
 	do shell script "curl -fsSL --max-time 5 " & quoted form of (repoURL & scriptName) & " -o " & quoted form of (cachePath & ".new")
 	do shell script "mv " & quoted form of (cachePath & ".new") & " " & quoted form of cachePath
-	set fetched to true
 end try
 
 try

@@ -1,6 +1,6 @@
--- scripts/Row4-Col2.applescript
--- Remote script for Stream Deck button at row 4, column 2.
+-- scripts/Row1-Col5.applescript
+-- Remote script for Stream Deck button at row 1, column 5.
 -- Edit this file on GitHub to change what the button does.
 -- The next press of the button will download and run this version.
 
-say "Row 4, Column 2"
+say "Row 1, Column 5"
