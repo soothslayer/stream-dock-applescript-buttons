@@ -1,6 +1,9 @@
--- scripts/Row2-Col2.applescript
--- Remote script for Stream Deck button at row 2, column 2.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row2-Col2: Deny (option 2)
+-- Types "2" and presses Enter — to reject Claude Code's permission prompts.
 
-say "Row 2, Column 2"
+tell application "System Events"
+	keystroke "2"
+	delay 0.1
+	key code 36
+end tell
+say "Denied"

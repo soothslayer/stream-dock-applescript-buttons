@@ -1,6 +1,6 @@
--- scripts/Row3-Col1.applescript
--- Remote script for Stream Deck button at row 3, column 1.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row3-Col1: Toggle VoiceOver
+-- Command+F5 — standard macOS shortcut to toggle VoiceOver on and off.
 
-say "Row 3, Column 1"
+tell application "System Events"
+	key code 96 using {command down}
+end tell

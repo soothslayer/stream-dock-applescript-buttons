@@ -1,6 +1,13 @@
--- scripts/Row2-Col4.applescript
--- Remote script for Stream Deck button at row 2, column 4.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row2-Col4: Read clipboard
+-- Speaks the current clipboard contents aloud.
 
-say "Row 2, Column 4"
+try
+	set clip to the clipboard as text
+	if (length of clip) is 0 then
+		say "Clipboard is empty"
+	else
+		say clip
+	end if
+on error
+	say "Cannot read clipboard"
+end try

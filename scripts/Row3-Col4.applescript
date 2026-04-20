@@ -1,6 +1,9 @@
--- scripts/Row3-Col4.applescript
--- Remote script for Stream Deck button at row 3, column 4.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row3-Col4: Emergency kill Claude
+-- Force-stops any running Claude Code processes.
 
-say "Row 3, Column 4"
+try
+	do shell script "pkill -f 'claude' || true"
+	say "Claude stopped"
+on error
+	say "Could not stop Claude"
+end try

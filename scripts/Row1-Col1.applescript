@@ -1,6 +1,11 @@
--- scripts/Row1-Col1.applescript
--- Remote script for Stream Deck button at row 1, column 1.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row1-Col1: Start Claude Code
+-- Opens Terminal, cds to the default project, launches Claude Code.
 
-say "Row 1, Column 1"
+set projectPath to "~/git"
+
+tell application "Terminal"
+	activate
+	do script "cd " & projectPath & " && claude --dangerously-skip-permissions"
+end tell
+delay 1
+say "Claude Code starting"

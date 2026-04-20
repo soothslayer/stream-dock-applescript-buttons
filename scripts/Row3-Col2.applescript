@@ -1,6 +1,15 @@
--- scripts/Row3-Col2.applescript
--- Remote script for Stream Deck button at row 3, column 2.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row3-Col2: Git status
+-- Runs git status in the default project and speaks a summary.
 
-say "Row 3, Column 2"
+set projectPath to "~/git"
+
+try
+	set result to do shell script "cd " & projectPath & " && git status --short 2>&1 | head -20"
+	if result is "" then
+		say "Working tree clean"
+	else
+		say "Changes: " & result
+	end if
+on error
+	say "Not a git repository or git not available"
+end try

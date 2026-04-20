@@ -1,6 +1,9 @@
--- scripts/Row2-Col1.applescript
--- Remote script for Stream Deck button at row 2, column 1.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row2-Col1: Approve (option 1)
+-- Types "1" and presses Enter — for Claude Code's numbered permission prompts.
 
-say "Row 2, Column 1"
+tell application "System Events"
+	keystroke "1"
+	delay 0.1
+	key code 36
+end tell
+say "Approved"

@@ -1,6 +1,6 @@
--- scripts/Row2-Col3.applescript
--- Remote script for Stream Deck button at row 2, column 3.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row2-Col3: Enter / submit
+-- Presses Return in the frontmost app. Useful for submitting prompts hands-free.
 
-say "Row 2, Column 3"
+tell application "System Events"
+	key code 36
+end tell

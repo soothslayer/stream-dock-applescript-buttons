@@ -1,6 +1,7 @@
--- scripts/Row1-Col5.applescript
--- Remote script for Stream Deck button at row 1, column 5.
--- Edit this file on GitHub to change what the button does.
--- The next press of the button will download and run this version.
+-- Row1-Col5: Interrupt Claude
+-- Sends ESC to the frontmost app to cancel Claude's current operation.
 
-say "Row 1, Column 5"
+tell application "System Events"
+	key code 53
+end tell
+say "Interrupted"
