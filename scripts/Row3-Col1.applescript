@@ -1,12 +1,9 @@
--- Row3-Col1: Toggle VoiceOver
--- Cmd+F5 — standard macOS shortcut.
--- May require "Use F1, F2, etc. keys as standard function keys" OR Fn held.
--- If this doesn't work, enable VoiceOver via System Settings > Accessibility > VoiceOver.
+-- Row3-Col1: Activate Siri
+-- Launches the Siri app, which opens the Siri panel and starts listening.
+-- Requires Siri to be enabled in System Settings > Apple Intelligence & Siri.
 
 try
-	tell application "System Events"
-		key code 96 using {command down}
-	end tell
-on error
-	say "Could not toggle VoiceOver"
+	tell application "Siri" to activate
+on error errMsg
+	say "Could not activate Siri. " & errMsg
 end try
