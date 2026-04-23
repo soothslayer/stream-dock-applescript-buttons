@@ -184,8 +184,27 @@ on run
 			my speakError("Could not start Claude. " & errMsg)
 			return
 		end try
-		-- Give Claude time to start up before sending the voice command.
-		delay 6
+		-- Poll until the Terminal window title shows Claude Code is ready.
+		-- The TUI sets the title to contain "Claude Code" once the prompt is live.
+		-- Fall back to a 25s ceiling if the title never matches.
+		set ready to false
+		repeat with i from 1 to 50
+			delay 0.5
+			try
+				tell application "Terminal"
+					set wName to name of window id wID
+				end tell
+				if wName contains titleMarker then
+					set ready to true
+					exit repeat
+				end if
+			end try
+		end repeat
+		if not ready then
+			my speak("Claude is slow to start. Sending the command anyway.")
+		end if
+		-- Small settle delay so the first prompt render finishes before we type.
+		delay 1.5
 	else
 		my speak("Found Claude Code window. Bringing it to the front.")
 	end if
