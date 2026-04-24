@@ -25,8 +25,32 @@ end confirmPress
 
 if not my confirmPress() then return
 
+-- Click the Siri menu bar icon to force voice listening mode.
+-- "tell application Siri to activate" respects Type to Siri and opens a text field;
+-- clicking the menu bar item always starts the microphone, like pressing the Siri key.
+set siriStarted to false
 try
-	tell application "Siri" to activate
-on error errMsg
-	say "Could not activate Siri. " & errMsg
+	tell application "System Events"
+		tell process "SystemUIServer"
+			set siriItems to (menu bar items of menu bar 1 whose description is "Siri")
+			if (count of siriItems) > 0 then
+				click (item 1 of siriItems)
+				set siriStarted to true
+			end if
+		end tell
+	end tell
 end try
+
+if not siriStarted then
+	-- Fallback: simulate the configured Siri keyboard shortcut
+	try
+		tell application "System Events"
+			key code 49 using {command down}
+		end tell
+		set siriStarted to true
+	end try
+end if
+
+if not siriStarted then
+	say "Could not activate Siri. Make sure Siri is enabled and shown in the menu bar."
+end if
