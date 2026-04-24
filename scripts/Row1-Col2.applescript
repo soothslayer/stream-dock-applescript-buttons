@@ -7,6 +7,27 @@
 --       security add-generic-password -a "$USER" -s ANTHROPIC_API_KEY -w "sk-ant-..."
 --   - Screen Recording permission granted to whatever runs this (Stream Deck / the .app)
 
+property buttonId : "Row1-Col2"
+property confirmAnnounce : "Describe screen"
+
+on confirmPress()
+	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
+	set markerPath to cacheDir & "confirm-" & buttonId & ".marker"
+	try
+		set nowSec to (do shell script "date +%s") as integer
+		set markerSec to (do shell script "stat -f %m " & quoted form of markerPath) as integer
+		if (nowSec - markerSec) < 5 then
+			do shell script "rm -f " & quoted form of markerPath
+			return true
+		end if
+	end try
+	try
+		do shell script "mkdir -p " & quoted form of cacheDir & " && touch " & quoted form of markerPath
+	end try
+	say confirmAnnounce & ". Press again to confirm."
+	return false
+end confirmPress
+
 on getAnthropicKey()
 	try
 		return do shell script "security find-generic-password -a \"$USER\" -s ANTHROPIC_API_KEY -w 2>/dev/null"
@@ -14,6 +35,8 @@ on getAnthropicKey()
 		return ""
 	end try
 end getAnthropicKey
+
+if not my confirmPress() then return
 
 set apiKey to getAnthropicKey()
 if apiKey is "" then

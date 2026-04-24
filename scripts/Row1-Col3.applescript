@@ -1,6 +1,27 @@
 -- Row1-Col3: Read last terminal output
 -- Reads the last ~500 chars of the front Terminal (or iTerm2) tab.
 
+property buttonId : "Row1-Col3"
+property confirmAnnounce : "Read terminal output"
+
+on confirmPress()
+	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
+	set markerPath to cacheDir & "confirm-" & buttonId & ".marker"
+	try
+		set nowSec to (do shell script "date +%s") as integer
+		set markerSec to (do shell script "stat -f %m " & quoted form of markerPath) as integer
+		if (nowSec - markerSec) < 5 then
+			do shell script "rm -f " & quoted form of markerPath
+			return true
+		end if
+	end try
+	try
+		do shell script "mkdir -p " & quoted form of cacheDir & " && touch " & quoted form of markerPath
+	end try
+	say confirmAnnounce & ". Press again to confirm."
+	return false
+end confirmPress
+
 on getTerminalText()
 	if application "Terminal" is running then
 		try
@@ -18,6 +39,8 @@ on getTerminalText()
 	end if
 	return ""
 end getTerminalText
+
+if not my confirmPress() then return
 
 set txt to getTerminalText()
 if txt is "" then

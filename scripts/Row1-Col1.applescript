@@ -6,6 +6,26 @@ property claudeArgs : "--dangerously-skip-permissions"
 property voiceCmd : "/voicemode:converse"
 property titleMarker : "Claude Code"
 property sayRate : 220
+property buttonId : "Row1-Col1"
+property confirmAnnounce : "Start Claude voice mode"
+
+on confirmPress()
+	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
+	set markerPath to cacheDir & "confirm-" & buttonId & ".marker"
+	try
+		set nowSec to (do shell script "date +%s") as integer
+		set markerSec to (do shell script "stat -f %m " & quoted form of markerPath) as integer
+		if (nowSec - markerSec) < 5 then
+			do shell script "rm -f " & quoted form of markerPath
+			return true
+		end if
+	end try
+	try
+		do shell script "mkdir -p " & quoted form of cacheDir & " && touch " & quoted form of markerPath
+	end try
+	say confirmAnnounce & ". Press again to confirm."
+	return false
+end confirmPress
 
 on speak(msg)
 	try
@@ -150,6 +170,7 @@ on openNewTerminalAndStartClaude(claudeBin, reuseFrontWindow)
 end openNewTerminalAndStartClaude
 
 on run
+	if not my confirmPress() then return
 	my speak("Starting Claude voice mode.")
 	
 	set terminalWasRunning to true
