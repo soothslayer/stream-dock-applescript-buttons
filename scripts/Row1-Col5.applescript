@@ -1,7 +1,7 @@
 -- Row1-Col5: Launch Siri
 
 property buttonId : "Row1-Col5"
-property confirmAnnounce : "Interrupt Claude"
+property confirmAnnounce : "Launch Siri"
 
 on confirmPress()
 	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
