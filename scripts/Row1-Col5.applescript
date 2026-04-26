@@ -23,8 +23,9 @@ end confirmPress
 
 if not my confirmPress() then return
 
+-- Press fn (Globe) + Space to activate Siri voice listening.
 try
-	do shell script "open -b com.apple.siri.launcher"
+	tell application "System Events" to key code 49 using {function down}
 on error
 	say "Could not launch Siri."
 end try
