@@ -1,6 +1,4 @@
--- Row1-Col5: Interrupt Claude
--- Sends ESC to the frontmost app to cancel Claude's current operation.
--- Requires Accessibility permission for Stream Deck / the .app.
+-- Row1-Col5: Launch Siri
 
 property buttonId : "Row1-Col5"
 property confirmAnnounce : "Interrupt Claude"
@@ -26,8 +24,7 @@ end confirmPress
 if not my confirmPress() then return
 
 try
-	tell application "System Events" to key code 53
-	say "Interrupted"
+	do shell script "open -b com.apple.siri.launcher"
 on error
-	say "Accessibility permission needed. See read me."
+	say "Could not launch Siri."
 end try
