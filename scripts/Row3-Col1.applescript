@@ -1,9 +1,8 @@
--- Row3-Col1: Activate Siri
--- Launches the Siri app, which opens the Siri panel and starts listening.
--- Requires Siri to be enabled in System Settings > Apple Intelligence & Siri.
+-- Row3-Col1: Run the "Start Claude Voice" Siri shortcut.
 
 property buttonId : "Row3-Col1"
-property confirmAnnounce : "Activate Siri"
+property shortcutName : "Start Claude Voice"
+property confirmAnnounce : "Start Claude Voice"
 
 on confirmPress()
 	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
@@ -25,32 +24,9 @@ end confirmPress
 
 if not my confirmPress() then return
 
--- Click the Siri menu bar icon to force voice listening mode.
--- "tell application Siri to activate" respects Type to Siri and opens a text field;
--- clicking the menu bar item always starts the microphone, like pressing the Siri key.
-set siriStarted to false
+say "Running " & shortcutName
 try
-	tell application "System Events"
-		tell process "SystemUIServer"
-			set siriItems to (menu bar items of menu bar 1 whose description is "Siri")
-			if (count of siriItems) > 0 then
-				click (item 1 of siriItems)
-				set siriStarted to true
-			end if
-		end tell
-	end tell
+	do shell script "shortcuts run " & quoted form of shortcutName
+on error errMsg
+	say "Shortcut failed: " & errMsg
 end try
-
-if not siriStarted then
-	-- Fallback: simulate the configured Siri keyboard shortcut
-	try
-		tell application "System Events"
-			key code 49 using {command down}
-		end tell
-		set siriStarted to true
-	end try
-end if
-
-if not siriStarted then
-	say "Could not activate Siri. Make sure Siri is enabled and shown in the menu bar."
-end if
