@@ -52,8 +52,10 @@ try
 	end try
 
 	if voIsRunning then
+		set spoken to "Turning VoiceOver Off"
 		do shell script "killall VoiceOver 2>/dev/null; sleep 0.5; open -a VoiceOver"
 	else
+		set spoken to "Turning VoiceOver On"
 		do shell script "open -a VoiceOver"
 	end if
 on error
