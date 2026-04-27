@@ -2,8 +2,10 @@
 
 property buttonId : "Row3-Col5"
 property confirmAnnounce : "Toggle Trackpad Commander"
+property confirmEnabled : false
 
 on confirmPress()
+	if not confirmEnabled then return true
 	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
 	set markerPath to cacheDir & "confirm-" & buttonId & ".marker"
 	try
