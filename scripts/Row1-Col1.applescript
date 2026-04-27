@@ -147,28 +147,21 @@ on sendKeystrokes(txt)
 end sendKeystrokes
 
 on openNewTerminalAndStartClaude(claudeBin, reuseFrontWindow)
-	-- If reuseFrontWindow is true, run the command in the existing front window
-	-- (avoids opening a second window when Terminal just launched with an empty one).
-	set cmd to "cd ~ && clear && " & (quoted form of claudeBin) & " " & claudeArgs
+	-- Pass voiceCmd as the initial prompt arg so claude starts directly in voice mode,
+	-- avoiding the need to poll for readiness and paste the slash command.
+	set cmd to "cd ~ && clear && " & (quoted form of claudeBin) & " " & claudeArgs & " " & quoted form of voiceCmd
 	tell application "Terminal"
 		activate
 		if reuseFrontWindow then
 			try
-				set newTab to do script cmd in front window
+				do script cmd in front window
 			on error
-				set newTab to do script cmd
+				do script cmd
 			end try
 		else
-			set newTab to do script cmd
+			do script cmd
 		end if
-		delay 0.3
-		try
-			set newWinID to id of (first window whose tabs contains newTab)
-		on error
-			set newWinID to id of front window
-		end try
 	end tell
-	return newWinID
 end openNewTerminalAndStartClaude
 
 on run
@@ -202,41 +195,19 @@ on run
 			return
 		end if
 		try
-			set wID to my openNewTerminalAndStartClaude(claudeBin, false)
+			my openNewTerminalAndStartClaude(claudeBin, false)
+			my speak("Voice mode starting.")
 		on error errMsg
 			my speakError("Could not start Claude. " & errMsg)
-			return
 		end try
-		-- Poll until the Terminal window title shows Claude Code is ready.
-		-- The TUI sets the title to contain "Claude Code" once the prompt is live.
-		-- Fall back to a 25s ceiling if the title never matches.
-		set ready to false
-		repeat with i from 1 to 50
-			delay 0.5
-			try
-				tell application "Terminal"
-					set wName to name of window id wID
-				end tell
-				if wName contains titleMarker then
-					set ready to true
-					exit repeat
-				end if
-			end try
-		end repeat
-		if not ready then
-			my speak("Claude is slow to start. Sending the command anyway.")
-		end if
-		-- Small settle delay so the first prompt render finishes before we type.
-		delay 1.5
 	else
 		my speak("Found Claude Code window. Bringing it to the front.")
+		try
+			my activateTerminalWindow(wID)
+			my sendKeystrokes(voiceCmd)
+			my speak("Voice mode starting.")
+		on error errMsg
+			my speakError("Could not send the voice command. " & errMsg)
+		end try
 	end if
-	
-	try
-		my activateTerminalWindow(wID)
-		my sendKeystrokes(voiceCmd)
-		my speak("Voice mode starting.")
-	on error errMsg
-		my speakError("Could not send the voice command. " & errMsg)
-	end try
 end run
