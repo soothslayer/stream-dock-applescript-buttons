@@ -58,7 +58,7 @@ on error errMsg
 		my logError("Quartz missing, installing pyobjc: " & errMsg)
 		say "Installing Siri helper. This will take a minute."
 		try
-			do shell script "/usr/bin/python3 -m pip install --user --break-system-packages --quiet pyobjc-framework-Quartz 2>&1"
+			do shell script "/usr/bin/python3 -m pip install --user --break-system-packages --quiet pyobjc-framework-Quartz 2>&1 || /usr/bin/python3 -m pip install --user --quiet pyobjc-framework-Quartz 2>&1"
 		on error installErr
 			my logError("Install failed: " & installErr)
 			say "Could not install Siri helper. " & installErr
