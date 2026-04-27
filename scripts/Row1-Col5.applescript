@@ -28,7 +28,7 @@ if not my confirmPress() then return
 -- Press fn (Globe) + Space to activate Siri voice listening.
 -- AppleScript's System Events doesn't support the fn modifier, so we
 -- post the key event via CGEvent with the SecondaryFn flag set.
-try
+on sendFnSpace()
 	do shell script "/usr/bin/python3 <<'PY'
 from Quartz import CGEventCreateKeyboardEvent, CGEventPost, CGEventSetFlags, kCGHIDEventTap, kCGEventFlagMaskSecondaryFn
 import time
@@ -41,11 +41,37 @@ CGEventPost(kCGHIDEventTap, down)
 time.sleep(0.05)
 CGEventPost(kCGHIDEventTap, up)
 PY"
-on error errMsg number errNum
+end sendFnSpace
+
+on logError(msg)
 	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
 	set logPath to cacheDir & "Row1-Col5.error.log"
 	try
-		do shell script "mkdir -p " & quoted form of cacheDir & " && printf '%s\\n' " & quoted form of ((short date string of (current date)) & " " & (time string of (current date)) & " [" & errNum & "] " & errMsg) & " >> " & quoted form of logPath
+		do shell script "mkdir -p " & quoted form of cacheDir & " && printf '%s\\n' " & quoted form of ((short date string of (current date)) & " " & (time string of (current date)) & " " & msg) & " >> " & quoted form of logPath
 	end try
-	say "Could not launch Siri. Error " & errNum & ". " & errMsg
+end logError
+
+try
+	sendFnSpace()
+on error errMsg
+	if errMsg contains "Quartz" or errMsg contains "ModuleNotFoundError" then
+		my logError("Quartz missing, installing pyobjc: " & errMsg)
+		say "Installing Siri helper. This will take a minute."
+		try
+			do shell script "/usr/bin/python3 -m pip install --user --break-system-packages --quiet pyobjc-framework-Quartz 2>&1"
+		on error installErr
+			my logError("Install failed: " & installErr)
+			say "Could not install Siri helper. " & installErr
+			return
+		end try
+		try
+			sendFnSpace()
+		on error retryErr
+			my logError("Retry failed: " & retryErr)
+			say "Install succeeded but Siri still failed. " & retryErr
+		end try
+	else
+		my logError("Siri failed: " & errMsg)
+		say "Could not launch Siri. " & errMsg
+	end if
 end try
