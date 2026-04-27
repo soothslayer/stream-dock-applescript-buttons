@@ -23,22 +23,9 @@ end confirmPress
 
 if not my confirmPress() then return
 
--- Press fn (Globe) + Space to activate Siri voice listening.
--- AppleScript's System Events doesn't support the fn modifier, so we
--- post the key event via CGEvent with the SecondaryFn flag set.
+-- Press Control + Space to activate Siri voice listening.
 try
-	do shell script "/usr/bin/python3 <<'PY'
-from Quartz import CGEventCreateKeyboardEvent, CGEventPost, CGEventSetFlags, kCGHIDEventTap, kCGEventFlagMaskSecondaryFn
-import time
-SPACE = 49
-down = CGEventCreateKeyboardEvent(None, SPACE, True)
-up = CGEventCreateKeyboardEvent(None, SPACE, False)
-CGEventSetFlags(down, kCGEventFlagMaskSecondaryFn)
-CGEventSetFlags(up, kCGEventFlagMaskSecondaryFn)
-CGEventPost(kCGHIDEventTap, down)
-time.sleep(0.05)
-CGEventPost(kCGHIDEventTap, up)
-PY"
+	tell application "System Events" to key code 49 using control down
 on error
 	say "Could not launch Siri."
 end try
