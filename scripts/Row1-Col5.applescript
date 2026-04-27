@@ -53,6 +53,7 @@ end logError
 
 try
 	sendFnSpace()
+	say "sent"
 on error errMsg
 	if errMsg contains "Quartz" or errMsg contains "ModuleNotFoundError" then
 		my logError("Quartz missing, installing pyobjc: " & errMsg)
