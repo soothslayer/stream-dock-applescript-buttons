@@ -41,6 +41,11 @@ CGEventPost(kCGHIDEventTap, down)
 time.sleep(0.05)
 CGEventPost(kCGHIDEventTap, up)
 PY"
-on error
-	say "Could not launch Siri."
+on error errMsg number errNum
+	set cacheDir to (POSIX path of (path to home folder)) & "Library/Application Support/StreamDockButtons/"
+	set logPath to cacheDir & "Row1-Col5.error.log"
+	try
+		do shell script "mkdir -p " & quoted form of cacheDir & " && printf '%s\\n' " & quoted form of ((short date string of (current date)) & " " & (time string of (current date)) & " [" & errNum & "] " & errMsg) & " >> " & quoted form of logPath
+	end try
+	say "Could not launch Siri. Error " & errNum & ". " & errMsg
 end try
